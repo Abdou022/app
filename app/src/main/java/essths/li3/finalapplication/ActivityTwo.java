@@ -1,15 +1,18 @@
 package essths.li3.finalapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 
 public class ActivityTwo extends AppCompatActivity {
     TextView time;
@@ -20,7 +23,13 @@ public class ActivityTwo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();*/
         setContentView(R.layout.activity_two);
+
+
+
         time= findViewById(R.id.time);
         b = findViewById(R.id.btn_next);
         handler = new Handler();
@@ -31,8 +40,26 @@ public class ActivityTwo extends AppCompatActivity {
                 handler.postDelayed(this, 1000); // Répétez la mise à jour toutes les secondes
             }
         };
-        Intent intent = new Intent(ActivityTwo.this, ActivityThree.class);
-        startActivity(intent);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActivityTwo.this, ActivityThree.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 0);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
     }
 
     private void updateTime() {
